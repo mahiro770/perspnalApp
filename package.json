@@ -1,0 +1,16 @@
+{
+  "name": "kurashi-log",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "allowScripts": {
+    "esbuild@0.18.20": true,
+    "esbuild@0.19.12": true,
+    "esbuild@0.21.5": true,
+    "esbuild@0.17.19": true,
+    "sharp@0.33.5": true,
+    "workerd@1.20250718.0": true
+  }
+}

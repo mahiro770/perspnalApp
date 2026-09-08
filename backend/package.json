@@ -1,0 +1,22 @@
+{
+  "name": "kurashi-log-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply kurashi-log-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply kurashi-log-db --remote"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.36.0",
+    "hono": "^4.6.0",
+    "@block65/webcrypto-web-push": "^1.0.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "drizzle-kit": "^0.28.0",
+    "wrangler": "^3.90.0"
+  }
+}
