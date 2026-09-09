@@ -18,6 +18,7 @@ export default {
         surface: 'hsl(var(--color-surface) / <alpha-value>)',
         'surface-alt': 'hsl(var(--color-surface-alt) / <alpha-value>)',
         border: 'hsl(var(--color-border) / <alpha-value>)',
+        'border-strong': 'hsl(var(--color-border-strong) / <alpha-value>)',
         text: 'hsl(var(--color-text) / <alpha-value>)',
         'text-muted': 'hsl(var(--color-text-muted) / <alpha-value>)',
         primary: {
