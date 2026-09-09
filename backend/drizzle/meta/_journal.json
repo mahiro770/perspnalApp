@@ -15,6 +15,13 @@
       "when": 1788959846591,
       "tag": "0001_tearful_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788962475382,
+      "tag": "0002_parallel_ultimates",
+      "breakpoints": true
     }
   ]
 }

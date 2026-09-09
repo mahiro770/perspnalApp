@@ -25,8 +25,20 @@ function toTransactionDto(tx: {
   };
 }
 
-function toCategoryDto(cat: { id: string; name: string; type: string; color: string | null }) {
-  return { id: cat.id, name: cat.name, type: cat.type, color: cat.color ?? '#94a3b8' };
+function toCategoryDto(cat: {
+  id: string;
+  name: string;
+  type: string;
+  color: string | null;
+  monthlyLimitMinor: number | null;
+}) {
+  return {
+    id: cat.id,
+    name: cat.name,
+    type: cat.type,
+    color: cat.color ?? '#94a3b8',
+    monthlyLimit: cat.monthlyLimitMinor,
+  };
 }
 
 app.get('/transactions', async (c) => {
@@ -78,6 +90,14 @@ app.post('/categories', async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const category = await service.createCategory(db, user.id, body);
   return c.json(toCategoryDto(category), 201);
+});
+
+app.put('/categories/:id', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  const body = await c.req.json().catch(() => ({}));
+  const category = await service.updateCategoryLimit(db, user.id, c.req.param('id'), body);
+  return c.json(toCategoryDto(category));
 });
 
 app.get('/summary', async (c) => {

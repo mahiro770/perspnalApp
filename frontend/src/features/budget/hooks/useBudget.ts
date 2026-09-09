@@ -9,6 +9,7 @@ import {
   fetchGoal,
   fetchTransactions,
   setGoal,
+  updateCategoryLimit,
   updateTransaction,
 } from '../api/budgetApi';
 
@@ -66,7 +67,16 @@ export function useDeleteTransaction() {
 export function useCreateCategory() {
   const invalidate = useInvalidateBudget();
   return useMutation({
-    mutationFn: (input: Omit<Category, 'id'>) => createCategory(input),
+    mutationFn: (input: Omit<Category, 'id' | 'monthlyLimit'>) => createCategory(input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useUpdateCategoryLimit() {
+  const invalidate = useInvalidateBudget();
+  return useMutation({
+    mutationFn: ({ id, monthlyLimit }: { id: string; monthlyLimit: number | null }) =>
+      updateCategoryLimit(id, monthlyLimit),
     onSuccess: invalidate,
   });
 }

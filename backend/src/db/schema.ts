@@ -56,6 +56,8 @@ export const budgetCategories = sqliteTable(
     icon: text('icon'),
     sortOrder: integer('sort_order').notNull().default(0),
     isArchived: integer('is_archived', { mode: 'boolean' }).notNull().default(false),
+    // 月ごとの上限額(支出カテゴリの予算アラート用)。未設定はnull。
+    monthlyLimitMinor: integer('monthly_limit_minor'),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
