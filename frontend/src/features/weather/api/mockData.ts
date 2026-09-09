@@ -119,6 +119,7 @@ export function buildMockForecast(regionCode: string): WeatherForecast {
     regionCode: region.code,
     regionName: region.name,
     updatedAt: new Date().toISOString(),
+    stale: false,
     current: {
       temp: base.high - 2,
       feelsLike: base.high - 1,

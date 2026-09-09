@@ -26,6 +26,8 @@ export interface WeatherForecast {
   regionCode: string;
   regionName: string;
   updatedAt: string;
+  /** 気象庁への取得に失敗し、直近の有効なキャッシュを返している場合はtrue */
+  stale: boolean;
   current: {
     temp: number;
     // 気象庁の予報APIは体感温度・湿度を提供しないため、実データ接続時はnullになりうる
