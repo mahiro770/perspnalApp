@@ -4,7 +4,11 @@ import { Transaction } from '@/features/budget/api/types';
 
 const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土'];
 const MAX_EVENT_CHIPS = 2;
-const MAX_TX_CHIPS = 1;
+
+interface DailyTotal {
+  income: number;
+  expense: number;
+}
 
 interface MonthGridProps {
   year: number;
@@ -14,7 +18,6 @@ interface MonthGridProps {
   selectedDate: string;
   onSelectDate: (dateKey: string) => void;
   onSelectEvent: (event: CalendarEvent) => void;
-  onSelectTransaction: (transaction: Transaction) => void;
 }
 
 export function MonthGrid({
@@ -25,7 +28,6 @@ export function MonthGrid({
   selectedDate,
   onSelectDate,
   onSelectEvent,
-  onSelectTransaction,
 }: MonthGridProps) {
   const days = getMonthGridDays(year, month);
   const today = new Date();
@@ -36,9 +38,12 @@ export function MonthGrid({
     eventsByDate.set(key, [...(eventsByDate.get(key) ?? []), e]);
   });
 
-  const txByDate = new Map<string, Transaction[]>();
+  const totalsByDate = new Map<string, DailyTotal>();
   transactions.forEach((tx) => {
-    txByDate.set(tx.date, [...(txByDate.get(tx.date) ?? []), tx]);
+    const totals = totalsByDate.get(tx.date) ?? { income: 0, expense: 0 };
+    if (tx.type === 'income') totals.income += tx.amount;
+    else totals.expense += tx.amount;
+    totalsByDate.set(tx.date, totals);
   });
 
   return (
@@ -57,11 +62,10 @@ export function MonthGrid({
           const isToday = isSameDay(day, today);
           const isSelected = dateKey === selectedDate;
           const dayEvents = eventsByDate.get(dateKey) ?? [];
-          const dayTx = txByDate.get(dateKey) ?? [];
+          const dayTotals = totalsByDate.get(dateKey);
 
           const shownEvents = dayEvents.slice(0, MAX_EVENT_CHIPS);
-          const shownTx = dayTx.slice(0, MAX_TX_CHIPS);
-          const hiddenCount = dayEvents.length - shownEvents.length + (dayTx.length - shownTx.length);
+          const hiddenCount = dayEvents.length - shownEvents.length;
 
           return (
             <div
@@ -94,21 +98,24 @@ export function MonthGrid({
                     {ev.title}
                   </button>
                 ))}
-                {shownTx.map((tx) => (
+                {dayTotals && dayTotals.income > 0 && (
                   <button
-                    key={tx.id}
-                    onClick={() => onSelectTransaction(tx)}
-                    title={formatCurrency(tx.amount)}
-                    className={`truncate rounded px-1 py-0.5 text-left text-[10px] font-semibold leading-tight sm:text-[11px] ${
-                      tx.type === 'income'
-                        ? 'bg-income/15 text-income hover:bg-income/25'
-                        : 'bg-expense/15 text-expense hover:bg-expense/25'
-                    }`}
+                    onClick={() => onSelectDate(dateKey)}
+                    title={`収入合計 ${formatCurrency(dayTotals.income)}(内訳を見る)`}
+                    className="truncate rounded bg-income/15 px-1 py-0.5 text-left text-[10px] font-semibold leading-tight text-income hover:bg-income/25 sm:text-[11px]"
                   >
-                    {tx.type === 'income' ? '+' : '-'}
-                    {formatCurrency(tx.amount)}
+                    +{formatCurrency(dayTotals.income)}
                   </button>
-                ))}
+                )}
+                {dayTotals && dayTotals.expense > 0 && (
+                  <button
+                    onClick={() => onSelectDate(dateKey)}
+                    title={`支出合計 ${formatCurrency(dayTotals.expense)}(内訳を見る)`}
+                    className="truncate rounded bg-expense/15 px-1 py-0.5 text-left text-[10px] font-semibold leading-tight text-expense hover:bg-expense/25 sm:text-[11px]"
+                  >
+                    -{formatCurrency(dayTotals.expense)}
+                  </button>
+                )}
                 {hiddenCount > 0 && (
                   <button
                     onClick={() => onSelectDate(dateKey)}

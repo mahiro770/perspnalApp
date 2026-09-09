@@ -5,18 +5,15 @@ import { getMonthRange } from '@/lib/date';
 import { useEvents } from '../hooks/useCalendar';
 import { useTransactions } from '@/features/budget/hooks/useBudget';
 import { CalendarEvent } from '../api/types';
-import { Transaction } from '@/features/budget/api/types';
 import { MonthGrid } from './MonthGrid';
 import { DayDetailSheet } from './DayDetailSheet';
 import { EventFormModal } from './EventFormModal';
-import { TransactionFormModal } from '@/features/budget/components/TransactionFormModal';
 
 export function CalendarPage() {
   const today = new Date();
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [openEvent, setOpenEvent] = useState<CalendarEvent | null>(null);
-  const [openTransaction, setOpenTransaction] = useState<Transaction | null>(null);
 
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
@@ -53,11 +50,10 @@ export function CalendarPage() {
         selectedDate={selectedDate ?? ''}
         onSelectDate={setSelectedDate}
         onSelectEvent={setOpenEvent}
-        onSelectTransaction={setOpenTransaction}
       />
 
       <p className="text-center text-xs text-text-muted">
-        日付をタップすると予定・支出の詳細を確認、予定や金額のボタンをタップすると内容を確認できます
+        日付・金額のボタンをタップすると内訳を、予定のボタンをタップすると内容を確認できます
       </p>
 
       {selectedDate && <DayDetailSheet dateKey={selectedDate} onClose={() => setSelectedDate(null)} />}
@@ -68,15 +64,6 @@ export function CalendarPage() {
           onOpenChange={(open) => !open && setOpenEvent(null)}
           defaultDate={openEvent.startAt.slice(0, 10)}
           event={openEvent}
-        />
-      )}
-
-      {openTransaction && (
-        <TransactionFormModal
-          open
-          onOpenChange={(open) => !open && setOpenTransaction(null)}
-          defaultDate={openTransaction.date}
-          transaction={openTransaction}
         />
       )}
     </div>
