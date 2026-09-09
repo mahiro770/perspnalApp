@@ -6,7 +6,9 @@ import {
   deleteTransaction,
   fetchBudgetSummary,
   fetchCategories,
+  fetchGoal,
   fetchTransactions,
+  setGoal,
   updateTransaction,
 } from '../api/budgetApi';
 
@@ -66,5 +68,20 @@ export function useCreateCategory() {
   return useMutation({
     mutationFn: (input: Omit<Category, 'id'>) => createCategory(input),
     onSuccess: invalidate,
+  });
+}
+
+export function useGoal(month: string) {
+  return useQuery({
+    queryKey: ['budget', 'goal', month],
+    queryFn: () => fetchGoal(month),
+  });
+}
+
+export function useSetGoal() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ month, targetAmount }: { month: string; targetAmount: number }) => setGoal(month, targetAmount),
+    onSuccess: (_, { month }) => queryClient.invalidateQueries({ queryKey: ['budget', 'goal', month] }),
   });
 }

@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, gte, isNull, lte, type SQL } from 'drizzle-orm';
 import type { Db } from '../../db';
-import { budgetCategories, budgetTransactions } from '../../db/schema';
+import { budgetCategories, budgetGoals, budgetTransactions } from '../../db/schema';
 
 export interface TransactionInput {
   categoryId: string;
@@ -105,5 +105,28 @@ export async function createCategory(db: Db, userId: string, input: CategoryInpu
     .insert(budgetCategories)
     .values({ userId, ...input })
     .returning();
+  return row;
+}
+
+export async function getGoal(db: Db, userId: string, month: string) {
+  const [row] = await db
+    .select()
+    .from(budgetGoals)
+    .where(and(eq(budgetGoals.userId, userId), eq(budgetGoals.month, month)))
+    .limit(1);
+  return row ?? null;
+}
+
+export async function upsertGoal(db: Db, userId: string, month: string, targetAmountMinor: number) {
+  const existing = await getGoal(db, userId, month);
+  if (existing) {
+    const [row] = await db
+      .update(budgetGoals)
+      .set({ targetAmountMinor, updatedAt: new Date() })
+      .where(eq(budgetGoals.id, existing.id))
+      .returning();
+    return row;
+  }
+  const [row] = await db.insert(budgetGoals).values({ userId, month, targetAmountMinor }).returning();
   return row;
 }

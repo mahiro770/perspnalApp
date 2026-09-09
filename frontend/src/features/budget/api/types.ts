@@ -38,3 +38,10 @@ export interface BudgetSummary {
   totalExpense: number;
   byCategory: CategorySummary[];
 }
+
+export interface Goal {
+  /** YYYY-MM */
+  month: string;
+  /** 0 は未設定を表す */
+  targetAmount: number;
+}

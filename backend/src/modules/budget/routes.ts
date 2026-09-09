@@ -87,4 +87,19 @@ app.get('/summary', async (c) => {
   return c.json(summary);
 });
 
+app.get('/goal', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  const goal = await service.getGoal(db, user.id, c.req.query('month'));
+  return c.json(goal);
+});
+
+app.put('/goal', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  const body = await c.req.json().catch(() => ({}));
+  const goal = await service.setGoal(db, user.id, body);
+  return c.json(goal);
+});
+
 export default app;

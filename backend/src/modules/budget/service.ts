@@ -83,6 +83,28 @@ export async function createCategory(db: Db, userId: string, body: any) {
   return repo.createCategory(db, userId, input);
 }
 
+function assertMonth(month: unknown): asserts month is string {
+  if (typeof month !== 'string' || !/^\d{4}-\d{2}$/.test(month)) {
+    throw new ValidationError('month must be in YYYY-MM format');
+  }
+}
+
+export async function getGoal(db: Db, userId: string, month?: string) {
+  assertMonth(month);
+  const goal = await repo.getGoal(db, userId, month);
+  return { month, targetAmount: goal?.targetAmountMinor ?? 0 };
+}
+
+export async function setGoal(db: Db, userId: string, body: any) {
+  assertMonth(body?.month);
+  const targetAmount = body?.targetAmount;
+  if (typeof targetAmount !== 'number' || !Number.isFinite(targetAmount) || targetAmount < 0) {
+    throw new ValidationError('targetAmount must be a non-negative number');
+  }
+  const goal = await repo.upsertGoal(db, userId, body.month, targetAmount);
+  return { month: goal.month, targetAmount: goal.targetAmountMinor };
+}
+
 export async function getMonthlySummary(db: Db, userId: string, month?: string) {
   if (!month || !/^\d{4}-\d{2}$/.test(month)) {
     throw new ValidationError('month must be in YYYY-MM format');

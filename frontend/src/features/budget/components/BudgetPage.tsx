@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { getMonthRange } from '@/lib/date';
 import { currentMonthKey } from '../api/mockData';
-import { useBudgetSummary, useCategories, useTransactions } from '../hooks/useBudget';
+import { useBudgetSummary, useCategories, useGoal, useTransactions } from '../hooks/useBudget';
 import { MonthSwitcher } from './MonthSwitcher';
 import { SummaryCards } from './SummaryCards';
+import { GoalCard } from './GoalCard';
 import { CategoryBreakdown } from './CategoryBreakdown';
 import { TransactionList } from './TransactionList';
 import { TransactionFormModal } from './TransactionFormModal';
@@ -15,6 +16,7 @@ export function BudgetPage() {
   const { from, to } = getMonthRange(month);
 
   const { data: summary } = useBudgetSummary(month);
+  const { data: goal } = useGoal(month);
   const { data: transactions = [] } = useTransactions(from, to);
   const { data: categories = [] } = useCategories();
 
@@ -36,6 +38,11 @@ export function BudgetPage() {
       <h1 className="hidden text-xl font-bold text-text md:block">家計簿</h1>
       <MonthSwitcher month={month} onChange={setMonth} />
       <SummaryCards totalIncome={summary?.totalIncome ?? 0} totalExpense={summary?.totalExpense ?? 0} />
+      <GoalCard
+        month={month}
+        targetAmount={goal?.targetAmount ?? 0}
+        balance={(summary?.totalIncome ?? 0) - (summary?.totalExpense ?? 0)}
+      />
       <CategoryBreakdown items={summary?.byCategory ?? []} />
       <TransactionList transactions={transactions} categories={categories} onSelect={openEdit} />
 
