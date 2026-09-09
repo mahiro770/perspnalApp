@@ -1,20 +1,24 @@
 name = "kurashi-log-backend"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
+# @block65/webcrypto-web-push が node:crypto に依存するため必要
+compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
 database_name = "kurashi-log-db"
-# `wrangler d1 create kurashi-log-db` の出力で置き換える
-database_id = "PLACEHOLDER_RUN_WRANGLER_D1_CREATE"
+database_id = "6c267c08-734e-4bb5-9a74-a023c0cfb7d6"
 migrations_dir = "drizzle"
 
 [vars]
-# フロントエンド(Cloudflare Pages)のオリジン。CORS許可用。ローカル開発用の値を初期値としている
-ALLOWED_ORIGIN = "http://localhost:5173"
+# フロントエンド(Cloudflare Pages)のオリジン。CORS許可用
+ALLOWED_ORIGIN = "https://kurashi-log-frontend.pages.dev"
 
-# VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY / VAPID_SUBJECT は機密情報のためここには書かず、
-# `wrangler secret put VAPID_PUBLIC_KEY` 等で個別に設定する(README参照)
+# VAPID公開鍵はブラウザに配布する前提の非秘匿情報なのでvarsで管理する
+VAPID_PUBLIC_KEY = "BHM2AGfZsMO4O7YREKLNSp2t6BngiaFuvEe0193A0ka2c6DoM4ACnGbAJ0aY-QTwIr7Q0giAQbjti2aIt9Fj3nE"
+
+# VAPID_PRIVATE_KEY / VAPID_SUBJECT は機密情報のためここには書かず、
+# `wrangler secret put VAPID_PRIVATE_KEY` 等で個別に設定する(README参照)
 
 [triggers]
 # 天気更新(30分おき)と、通知(毎日 UTC 22:00 = JST 7:00)。scheduled()内でevent.cronにより分岐する

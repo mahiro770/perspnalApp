@@ -3,6 +3,8 @@ dist/
 .wrangler/
 .env
 .env.local
+.env.production
+.env.*.local
 *.local
 .DS_Store
 *.tsbuildinfo
