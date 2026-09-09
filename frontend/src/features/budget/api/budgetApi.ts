@@ -1,12 +1,14 @@
 import { api } from '@/lib/api';
-import { BudgetSummary, Category, NewTransactionInput, Transaction, TransactionType } from './types';
+import { BudgetSummary, Category, Goal, NewTransactionInput, Transaction, TransactionType } from './types';
 import {
   MOCK_CATEGORIES,
   buildMockSummary,
   mockCreateCategory,
   mockCreateTransaction,
   mockDeleteTransaction,
+  mockGetGoal,
   mockListTransactions,
+  mockSetGoal,
   mockUpdateTransaction,
 } from './mockData';
 
@@ -74,5 +76,21 @@ export async function createCategory(input: Omit<Category, 'id'>): Promise<Categ
     return await api.post<Category>('/api/budget/categories', input);
   } catch {
     return mockCreateCategory(input);
+  }
+}
+
+export async function fetchGoal(month: string): Promise<Goal> {
+  try {
+    return await api.get<Goal>(`/api/budget/goal?month=${month}`);
+  } catch {
+    return mockGetGoal(month);
+  }
+}
+
+export async function setGoal(month: string, targetAmount: number): Promise<Goal> {
+  try {
+    return await api.put<Goal>('/api/budget/goal', { month, targetAmount });
+  } catch {
+    return mockSetGoal(month, targetAmount);
   }
 }

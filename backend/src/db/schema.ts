@@ -92,6 +92,23 @@ export const budgetTransactions = sqliteTable(
   }),
 );
 
+export const budgetGoals = sqliteTable(
+  'budget_goals',
+  {
+    id: id(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    month: text('month').notNull(),
+    targetAmountMinor: integer('target_amount_minor').notNull(),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (table) => ({
+    userMonthKey: uniqueIndex('budget_goals_user_month_key').on(table.userId, table.month),
+  }),
+);
+
 export const weatherLocations = sqliteTable(
   'weather_locations',
   {
@@ -145,8 +162,13 @@ export const usersRelations = relations(users, ({ many }) => ({
   calendarEvents: many(calendarEvents),
   budgetCategories: many(budgetCategories),
   budgetTransactions: many(budgetTransactions),
+  budgetGoals: many(budgetGoals),
   weatherLocations: many(weatherLocations),
   pushSubscriptions: many(pushSubscriptions),
+}));
+
+export const budgetGoalsRelations = relations(budgetGoals, ({ one }) => ({
+  user: one(users, { fields: [budgetGoals.userId], references: [users.id] }),
 }));
 
 export const calendarEventsRelations = relations(calendarEvents, ({ one, many }) => ({

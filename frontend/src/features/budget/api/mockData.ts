@@ -1,5 +1,5 @@
 import { toDateKey, toMonthKey } from '@/lib/date';
-import { BudgetSummary, Category, NewTransactionInput, Transaction } from './types';
+import { BudgetSummary, Category, Goal, NewTransactionInput, Transaction } from './types';
 
 export const MOCK_CATEGORIES: Category[] = [
   { id: 'cat-salary', name: '給与', type: 'income', color: '#2563eb' },
@@ -106,4 +106,15 @@ export function buildMockSummary(month: string): BudgetSummary {
 
 export function currentMonthKey(): string {
   return toMonthKey(new Date());
+}
+
+const MOCK_GOALS = new Map<string, number>();
+
+export function mockGetGoal(month: string): Goal {
+  return { month, targetAmount: MOCK_GOALS.get(month) ?? 0 };
+}
+
+export function mockSetGoal(month: string, targetAmount: number): Goal {
+  MOCK_GOALS.set(month, targetAmount);
+  return { month, targetAmount };
 }
