@@ -21,6 +21,10 @@ export interface CategoryInput {
   sortOrder?: number;
 }
 
+export interface CategoryLimitInput {
+  monthlyLimitMinor: number | null;
+}
+
 export async function listTransactions(
   db: Db,
   userId: string,
@@ -106,6 +110,15 @@ export async function createCategory(db: Db, userId: string, input: CategoryInpu
     .values({ userId, ...input })
     .returning();
   return row;
+}
+
+export async function updateCategoryLimit(db: Db, userId: string, id: string, input: CategoryLimitInput) {
+  const [row] = await db
+    .update(budgetCategories)
+    .set({ monthlyLimitMinor: input.monthlyLimitMinor, updatedAt: new Date() })
+    .where(and(eq(budgetCategories.id, id), eq(budgetCategories.userId, userId)))
+    .returning();
+  return row ?? null;
 }
 
 export async function getGoal(db: Db, userId: string, month: string) {

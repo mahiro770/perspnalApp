@@ -43,7 +43,7 @@ export function BudgetPage() {
         targetAmount={goal?.targetAmount ?? 0}
         balance={(summary?.totalIncome ?? 0) - (summary?.totalExpense ?? 0)}
       />
-      <CategoryBreakdown items={summary?.byCategory ?? []} />
+      <CategoryBreakdown items={summary?.byCategory ?? []} categories={categories} />
       <TransactionList transactions={transactions} categories={categories} onSelect={openEdit} />
 
       <button

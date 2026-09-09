@@ -83,6 +83,16 @@ export async function createCategory(db: Db, userId: string, body: any) {
   return repo.createCategory(db, userId, input);
 }
 
+export async function updateCategoryLimit(db: Db, userId: string, id: string, body: any) {
+  const raw = body?.monthlyLimit;
+  if (raw !== null && (typeof raw !== 'number' || !Number.isFinite(raw) || raw < 0)) {
+    throw new ValidationError('monthlyLimit must be a non-negative number or null');
+  }
+  const updated = await repo.updateCategoryLimit(db, userId, id, { monthlyLimitMinor: raw });
+  if (!updated) throw new NotFoundError('category not found');
+  return updated;
+}
+
 function assertMonth(month: unknown): asserts month is string {
   if (typeof month !== 'string' || !/^\d{4}-\d{2}$/.test(month)) {
     throw new ValidationError('month must be in YYYY-MM format');

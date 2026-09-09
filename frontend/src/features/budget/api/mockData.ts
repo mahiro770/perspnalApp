@@ -2,16 +2,16 @@ import { toDateKey, toMonthKey } from '@/lib/date';
 import { BudgetSummary, Category, Goal, NewTransactionInput, Transaction } from './types';
 
 export const MOCK_CATEGORIES: Category[] = [
-  { id: 'cat-salary', name: '給与', type: 'income', color: '#2563eb' },
-  { id: 'cat-side', name: '副業', type: 'income', color: '#0891b2' },
-  { id: 'cat-other-income', name: 'その他収入', type: 'income', color: '#0d9488' },
-  { id: 'cat-food', name: '食費', type: 'expense', color: '#f97316' },
-  { id: 'cat-daily', name: '日用品', type: 'expense', color: '#a855f7' },
-  { id: 'cat-transport', name: '交通費', type: 'expense', color: '#eab308' },
-  { id: 'cat-utility', name: '水道光熱費', type: 'expense', color: '#ef4444' },
-  { id: 'cat-housing', name: '住居費', type: 'expense', color: '#64748b' },
-  { id: 'cat-entertainment', name: '娯楽', type: 'expense', color: '#ec4899' },
-  { id: 'cat-medical', name: '医療費', type: 'expense', color: '#14b8a6' },
+  { id: 'cat-salary', name: '給与', type: 'income', color: '#2563eb', monthlyLimit: null },
+  { id: 'cat-side', name: '副業', type: 'income', color: '#0891b2', monthlyLimit: null },
+  { id: 'cat-other-income', name: 'その他収入', type: 'income', color: '#0d9488', monthlyLimit: null },
+  { id: 'cat-food', name: '食費', type: 'expense', color: '#f97316', monthlyLimit: 30000 },
+  { id: 'cat-daily', name: '日用品', type: 'expense', color: '#a855f7', monthlyLimit: null },
+  { id: 'cat-transport', name: '交通費', type: 'expense', color: '#eab308', monthlyLimit: null },
+  { id: 'cat-utility', name: '水道光熱費', type: 'expense', color: '#ef4444', monthlyLimit: null },
+  { id: 'cat-housing', name: '住居費', type: 'expense', color: '#64748b', monthlyLimit: null },
+  { id: 'cat-entertainment', name: '娯楽', type: 'expense', color: '#ec4899', monthlyLimit: 5000 },
+  { id: 'cat-medical', name: '医療費', type: 'expense', color: '#14b8a6', monthlyLimit: null },
 ];
 
 function dateInCurrentMonth(day: number): string {
@@ -69,10 +69,22 @@ export function mockListTransactions(from?: string, to?: string, type?: 'income'
   }).sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export function mockCreateCategory(input: Omit<Category, 'id'>): Category {
+export function mockCreateCategory(input: Omit<Category, 'id' | 'monthlyLimit'>): Category {
   const palette = ['#2563eb', '#f97316', '#a855f7', '#0d9488', '#ef4444', '#eab308', '#ec4899', '#64748b'];
-  const category: Category = { id: `cat-${Date.now()}`, ...input, color: input.color || palette[MOCK_CATEGORIES.length % palette.length] };
+  const category: Category = {
+    id: `cat-${Date.now()}`,
+    ...input,
+    color: input.color || palette[MOCK_CATEGORIES.length % palette.length],
+    monthlyLimit: null,
+  };
   MOCK_CATEGORIES.push(category);
+  return category;
+}
+
+export function mockUpdateCategoryLimit(id: string, monthlyLimit: number | null): Category {
+  const category = MOCK_CATEGORIES.find((c) => c.id === id);
+  if (!category) throw new Error('category not found');
+  category.monthlyLimit = monthlyLimit;
   return category;
 }
 

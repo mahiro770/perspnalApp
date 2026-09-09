@@ -1,0 +1,1 @@
+ALTER TABLE `budget_categories` ADD `monthly_limit_minor` integer;

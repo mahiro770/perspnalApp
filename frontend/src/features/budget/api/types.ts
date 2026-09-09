@@ -5,6 +5,8 @@ export interface Category {
   name: string;
   type: TransactionType;
   color: string;
+  /** 月の上限額。nullは未設定 */
+  monthlyLimit: number | null;
 }
 
 export interface Transaction {
