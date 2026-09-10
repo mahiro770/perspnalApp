@@ -3,6 +3,7 @@ import { TransactionType, NewTransactionInput, Category } from '../api/types';
 import {
   createCategory,
   createTransaction,
+  deleteCategory,
   deleteTransaction,
   fetchBudgetSummary,
   fetchCategories,
@@ -77,6 +78,14 @@ export function useUpdateCategoryLimit() {
   return useMutation({
     mutationFn: ({ id, monthlyLimit }: { id: string; monthlyLimit: number | null }) =>
       updateCategoryLimit(id, monthlyLimit),
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteCategory() {
+  const invalidate = useInvalidateBudget();
+  return useMutation({
+    mutationFn: (id: string) => deleteCategory(id),
     onSuccess: invalidate,
   });
 }

@@ -88,6 +88,11 @@ export function mockUpdateCategoryLimit(id: string, monthlyLimit: number | null)
   return category;
 }
 
+export function mockDeleteCategory(id: string): void {
+  const index = MOCK_CATEGORIES.findIndex((c) => c.id === id);
+  if (index >= 0) MOCK_CATEGORIES.splice(index, 1);
+}
+
 export function buildMockSummary(month: string): BudgetSummary {
   const { from, to } = (() => {
     const [y, m] = month.split('-').map(Number);
