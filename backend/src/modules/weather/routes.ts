@@ -24,4 +24,26 @@ app.post('/regions/default', async (c) => {
   return c.json(location);
 });
 
+app.get('/favorites', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  const favorites = await service.listFavorites(db, user.id);
+  return c.json(favorites);
+});
+
+app.post('/favorites', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  const body = await c.req.json().catch(() => ({}));
+  const favorite = await service.addFavorite(db, user.id, body?.regionCode);
+  return c.json(favorite, 201);
+});
+
+app.delete('/favorites/:id', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  await service.removeFavorite(db, user.id, c.req.param('id'));
+  return c.body(null, 204);
+});
+
 export default app;

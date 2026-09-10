@@ -1,4 +1,4 @@
-import { ExternalApiError, ValidationError } from '../../core/errors';
+import { ExternalApiError, NotFoundError, ValidationError } from '../../core/errors';
 import type { Db } from '../../db';
 import { fetchJmaForecast } from './jmaClient';
 import { transformJmaForecast } from './jmaTransform';
@@ -64,6 +64,28 @@ export async function setDefaultRegion(db: Db, userId: string, regionCode: strin
   const name = findRegionName(regionCode);
   if (!name) throw new ValidationError('unknown regionCode');
   return repo.setPrimaryLocation(db, userId, regionCode, name);
+}
+
+function toLocationDto(loc: { id: string; areaCode: string; areaName: string; isPrimary: boolean }) {
+  return { id: loc.id, regionCode: loc.areaCode, regionName: loc.areaName, isPrimary: loc.isPrimary };
+}
+
+export async function listFavorites(db: Db, userId: string) {
+  const locations = await repo.listLocationsForUser(db, userId);
+  return locations.map(toLocationDto);
+}
+
+export async function addFavorite(db: Db, userId: string, regionCode: unknown) {
+  if (typeof regionCode !== 'string') throw new ValidationError('regionCode is required');
+  const name = findRegionName(regionCode);
+  if (!name) throw new ValidationError('unknown regionCode');
+  const location = await repo.addLocation(db, userId, regionCode, name);
+  return toLocationDto(location);
+}
+
+export async function removeFavorite(db: Db, userId: string, id: string) {
+  const removed = await repo.removeLocation(db, userId, id);
+  if (!removed) throw new NotFoundError('location not found');
 }
 
 export async function refreshAllCachedRegions(db: Db) {
