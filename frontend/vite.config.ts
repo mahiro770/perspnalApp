@@ -46,11 +46,13 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            // アプリシェル(HTML/JS/CSS)は多少古くても即応性を優先し、裏側で更新する
+            // アプリシェル(HTML/JS/CSS)はネットワーク優先。SWR方式だと、SPA内では
+            // documentの再取得が起きないため、タブを開いたままだと再デプロイ後も
+            // 古いコードを使い続けてしまう(オフライン時のみキャッシュにフォールバック)。
             urlPattern: ({ request }) =>
               ['document', 'script', 'style', 'worker'].includes(request.destination),
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'app-shell' },
+            handler: 'NetworkFirst',
+            options: { cacheName: 'app-shell', networkTimeoutSeconds: 5 },
           },
           {
             // 天気APIは鮮度優先だが、オフライン時は直近の予報を表示できるようにする
