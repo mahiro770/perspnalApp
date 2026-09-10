@@ -1,17 +1,34 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui';
+import { Card, CardContent, Select } from '@/components/ui';
 import { useWeatherStore } from '@/stores/weatherStore';
-import { useWeatherForecast } from '@/features/weather/hooks/useWeather';
+import { useFavoriteRegions, useWeatherForecast } from '@/features/weather/hooks/useWeather';
 import { WeatherIcon, WEATHER_LABEL } from '@/features/weather/components/weatherIcons';
 
 export function TodayWeatherCard() {
-  const { selectedRegionCode } = useWeatherStore();
+  const { selectedRegionCode, setSelectedRegionCode } = useWeatherStore();
   const { data: forecast, isLoading } = useWeatherForecast(selectedRegionCode);
+  const { data: favorites = [] } = useFavoriteRegions();
 
   return (
-    <Link to="/weather">
-      <Card className="bg-weather/5 transition-colors hover:bg-weather/10">
+    <Card className="bg-weather/5">
+      {favorites.length > 0 && (
+        <div className="flex items-center justify-between border-b border-border px-4 pb-2 pt-3">
+          <span className="text-xs text-text-muted">お気に入り地域</span>
+          <Select
+            value={selectedRegionCode}
+            onChange={(e) => setSelectedRegionCode(e.target.value)}
+            className="h-7 w-auto py-0 text-xs"
+          >
+            {favorites.map((fav) => (
+              <option key={fav.id} value={fav.regionCode}>
+                {fav.regionName}
+              </option>
+            ))}
+          </Select>
+        </div>
+      )}
+      <Link to="/weather" className="block transition-colors hover:bg-weather/10">
         <CardContent className="flex items-center gap-4">
           {isLoading || !forecast ? (
             <div className="h-14 w-full animate-pulse rounded-lg bg-surface-alt" />
@@ -37,7 +54,7 @@ export function TodayWeatherCard() {
             </>
           )}
         </CardContent>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 }
