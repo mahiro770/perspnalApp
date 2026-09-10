@@ -13,12 +13,12 @@ export function TodayWeatherCard() {
   return (
     <Card className="bg-weather/5">
       {favorites.length > 0 && (
-        <div className="flex items-center justify-between border-b border-border px-4 pb-2 pt-3">
-          <span className="text-xs text-text-muted">お気に入り地域</span>
+        <div className="flex items-center justify-between gap-3 border-b border-border px-4 pb-2 pt-3">
+          <span className="whitespace-nowrap text-xs text-text-muted">お気に入り地域</span>
           <Select
             value={selectedRegionCode}
             onChange={(e) => setSelectedRegionCode(e.target.value)}
-            className="h-7 w-auto py-0 text-xs"
+            className="!w-auto flex-shrink-0 h-7 py-0 text-xs"
           >
             {favorites.map((fav) => (
               <option key={fav.id} value={fav.regionCode}>
