@@ -15,7 +15,7 @@ export default defineConfig({
       // virtual:pwa-register/react を自前で呼ぶため、自動注入スクリプトは無効化する
       // (二重登録を避けるため。更新チェックの実処理はPwaUpdater.tsx側)
       injectRegister: null,
-      includeAssets: ['icon-192.svg', 'icon-512.svg'],
+      includeAssets: ['icon-192.svg', 'icon-512.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'くらしログ',
         short_name: 'くらしログ',
