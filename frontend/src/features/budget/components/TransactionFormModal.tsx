@@ -83,12 +83,18 @@ export function TransactionFormModal({ open, onOpenChange, defaultDate, transact
 
         <div>
           <Label htmlFor="tx-date">日付</Label>
-          <Input id="tx-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+          <Input id="tx-date" type="date" className="w-full" value={date} onChange={(e) => setDate(e.target.value)} required />
         </div>
 
         <div>
           <Label htmlFor="tx-category">カテゴリ</Label>
-          <Select id="tx-category" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
+          <Select
+            id="tx-category"
+            className="w-full"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            required
+          >
             {categoriesForType.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -105,6 +111,7 @@ export function TransactionFormModal({ open, onOpenChange, defaultDate, transact
             inputMode="numeric"
             min={0}
             placeholder="1000"
+            className="w-full"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             required
@@ -113,7 +120,7 @@ export function TransactionFormModal({ open, onOpenChange, defaultDate, transact
 
         <div>
           <Label htmlFor="tx-memo">メモ(任意)</Label>
-          <Textarea id="tx-memo" rows={2} value={memo} onChange={(e) => setMemo(e.target.value)} />
+          <Textarea id="tx-memo" rows={2} className="w-full" value={memo} onChange={(e) => setMemo(e.target.value)} />
         </div>
 
         <div className="mt-2 flex gap-2">

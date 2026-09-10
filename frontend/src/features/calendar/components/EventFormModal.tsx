@@ -68,12 +68,19 @@ export function EventFormModal({ open, onOpenChange, defaultDate, event }: Event
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div>
           <Label htmlFor="ev-title">タイトル</Label>
-          <Input id="ev-title" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="打ち合わせ" />
+          <Input
+            id="ev-title"
+            className="w-full"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            placeholder="打ち合わせ"
+          />
         </div>
 
         <div>
           <Label htmlFor="ev-date">日付</Label>
-          <Input id="ev-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+          <Input id="ev-date" type="date" className="w-full" value={date} onChange={(e) => setDate(e.target.value)} required />
         </div>
 
         <div className="flex items-center justify-between">
@@ -94,23 +101,23 @@ export function EventFormModal({ open, onOpenChange, defaultDate, event }: Event
           <div className="flex gap-2">
             <div className="flex-1">
               <Label htmlFor="ev-start">開始</Label>
-              <Input id="ev-start" type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              <Input id="ev-start" type="time" className="w-full" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
             </div>
             <div className="flex-1">
               <Label htmlFor="ev-end">終了</Label>
-              <Input id="ev-end" type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              <Input id="ev-end" type="time" className="w-full" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
             </div>
           </div>
         )}
 
         <div>
           <Label htmlFor="ev-location">場所(任意)</Label>
-          <Input id="ev-location" value={location} onChange={(e) => setLocation(e.target.value)} />
+          <Input id="ev-location" className="w-full" value={location} onChange={(e) => setLocation(e.target.value)} />
         </div>
 
         <div>
           <Label htmlFor="ev-memo">メモ(任意)</Label>
-          <Textarea id="ev-memo" rows={2} value={memo} onChange={(e) => setMemo(e.target.value)} />
+          <Textarea id="ev-memo" rows={2} className="w-full" value={memo} onChange={(e) => setMemo(e.target.value)} />
         </div>
 
         <div className="mt-2 flex gap-2">

@@ -39,6 +39,7 @@ export function GoalFormModal({ open, onOpenChange, month, currentTarget }: Goal
             inputMode="numeric"
             min={0}
             placeholder="30000"
+            className="w-full"
             value={targetAmount}
             onChange={(e) => setTargetAmount(e.target.value)}
           />

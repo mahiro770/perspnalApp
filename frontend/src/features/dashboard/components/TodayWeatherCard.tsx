@@ -18,7 +18,7 @@ export function TodayWeatherCard() {
           <Select
             value={selectedRegionCode}
             onChange={(e) => setSelectedRegionCode(e.target.value)}
-            className="!w-auto min-w-[8rem] flex-shrink-0"
+            className="min-w-[8rem] flex-shrink-0"
           >
             {favorites.map((fav) => (
               <option key={fav.id} value={fav.regionCode}>
