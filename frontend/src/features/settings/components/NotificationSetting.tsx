@@ -38,7 +38,7 @@ export function NotificationSetting() {
             type="time"
             value={reminderTime}
             onChange={(e) => setReminderTime(e.target.value)}
-            className="w-40"
+            className="!w-40"
           />
         </div>
       </CardContent>
