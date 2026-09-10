@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { Plus } from 'lucide-react';
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Select } from '@/components/ui';
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label, Select } from '@/components/ui';
 import { useCategories, useCreateCategory } from '@/features/budget/hooks/useBudget';
 import { TransactionType } from '@/features/budget/api/types';
 
@@ -54,20 +54,28 @@ export function CategoryManager() {
           </div>
         </div>
 
-        <form onSubmit={handleAdd} className="flex items-center gap-2 border-t border-border pt-3">
-          <Select value={type} onChange={(e) => setType(e.target.value as TransactionType)} className="!w-24">
-            <option value="expense">支出</option>
-            <option value="income">収入</option>
-          </Select>
-          <Input
-            placeholder="新しいカテゴリ名"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="flex-1"
-          />
-          <Button type="submit" size="icon" disabled={createMutation.isPending}>
-            <Plus className="h-4 w-4" />
-          </Button>
+        <form onSubmit={handleAdd} className="border-t border-border pt-3">
+          <Label htmlFor="new-category-name">新しいカテゴリを追加</Label>
+          <div className="flex items-center gap-2">
+            <Select
+              value={type}
+              onChange={(e) => setType(e.target.value as TransactionType)}
+              className="w-24 flex-shrink-0"
+            >
+              <option value="expense">支出</option>
+              <option value="income">収入</option>
+            </Select>
+            <Input
+              id="new-category-name"
+              placeholder="カテゴリ名を入力"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full flex-1"
+            />
+            <Button type="submit" size="icon" disabled={createMutation.isPending} aria-label="カテゴリを追加">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

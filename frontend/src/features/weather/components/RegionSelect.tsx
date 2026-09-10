@@ -10,7 +10,7 @@ export function RegionSelect({ value, onChange }: RegionSelectProps) {
   const { data: regions = [] } = useWeatherRegions();
 
   return (
-    <Select value={value} onChange={(e) => onChange(e.target.value)} className="w-auto min-w-[10rem]">
+    <Select value={value} onChange={(e) => onChange(e.target.value)} className="min-w-[10rem]">
       {regions.map((region) => (
         <option key={region.code} value={region.code}>
           {region.name}

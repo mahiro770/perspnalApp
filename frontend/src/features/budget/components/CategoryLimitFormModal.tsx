@@ -39,6 +39,7 @@ export function CategoryLimitFormModal({ open, onOpenChange, category }: Categor
             inputMode="numeric"
             min={0}
             placeholder="未設定"
+            className="w-full"
             value={limit}
             onChange={(e) => setLimit(e.target.value)}
           />
