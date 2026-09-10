@@ -7,7 +7,11 @@
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
     <meta name="description" content="天気予報・カレンダー・家計簿をひとつにまとめる、くらしログ" />
     <link rel="icon" type="image/svg+xml" href="/icon-192.svg" />
-    <link rel="apple-touch-icon" href="/icon-192.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- iOS SafariはWeb App Manifestのdisplay/iconsだけでは不十分なため、専用タグで補う -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="くらしログ" />
     <title>くらしログ</title>
     <script>
       // テーマ確定前の白画面フラッシュを防ぐため、描画前に同期でクラスを付与する
