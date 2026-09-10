@@ -5,6 +5,7 @@ import {
   buildMockSummary,
   mockCreateCategory,
   mockCreateTransaction,
+  mockDeleteCategory,
   mockDeleteTransaction,
   mockGetGoal,
   mockListTransactions,
@@ -85,6 +86,14 @@ export async function updateCategoryLimit(id: string, monthlyLimit: number | nul
     return await api.put<Category>(`/api/budget/categories/${id}`, { monthlyLimit });
   } catch {
     return mockUpdateCategoryLimit(id, monthlyLimit);
+  }
+}
+
+export async function deleteCategory(id: string): Promise<void> {
+  try {
+    await api.delete<void>(`/api/budget/categories/${id}`);
+  } catch {
+    mockDeleteCategory(id);
   }
 }
 

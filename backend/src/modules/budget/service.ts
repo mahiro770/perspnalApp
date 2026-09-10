@@ -83,6 +83,12 @@ export async function createCategory(db: Db, userId: string, body: any) {
   return repo.createCategory(db, userId, input);
 }
 
+export async function deleteCategory(db: Db, userId: string, id: string) {
+  const archived = await repo.archiveCategory(db, userId, id);
+  if (!archived) throw new NotFoundError('category not found');
+  return archived;
+}
+
 export async function updateCategoryLimit(db: Db, userId: string, id: string, body: any) {
   const raw = body?.monthlyLimit;
   if (raw !== null && (typeof raw !== 'number' || !Number.isFinite(raw) || raw < 0)) {

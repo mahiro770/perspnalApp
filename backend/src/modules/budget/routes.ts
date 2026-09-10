@@ -100,6 +100,13 @@ app.put('/categories/:id', async (c) => {
   return c.json(toCategoryDto(category));
 });
 
+app.delete('/categories/:id', async (c) => {
+  const db = c.get('db');
+  const user = await getCurrentUser(db);
+  await service.deleteCategory(db, user.id, c.req.param('id'));
+  return c.body(null, 204);
+});
+
 app.get('/summary', async (c) => {
   const db = c.get('db');
   const user = await getCurrentUser(db);

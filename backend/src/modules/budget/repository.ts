@@ -112,6 +112,16 @@ export async function createCategory(db: Db, userId: string, input: CategoryInpu
   return row;
 }
 
+// 既存の取引が参照している可能性があるため物理削除はせず、一覧から外れるようにする
+export async function archiveCategory(db: Db, userId: string, id: string) {
+  const [row] = await db
+    .update(budgetCategories)
+    .set({ isArchived: true, updatedAt: new Date() })
+    .where(and(eq(budgetCategories.id, id), eq(budgetCategories.userId, userId)))
+    .returning();
+  return row ?? null;
+}
+
 export async function updateCategoryLimit(db: Db, userId: string, id: string, input: CategoryLimitInput) {
   const [row] = await db
     .update(budgetCategories)
