@@ -55,7 +55,7 @@ export function CategoryManager() {
         </div>
 
         <form onSubmit={handleAdd} className="flex items-center gap-2 border-t border-border pt-3">
-          <Select value={type} onChange={(e) => setType(e.target.value as TransactionType)} className="w-24">
+          <Select value={type} onChange={(e) => setType(e.target.value as TransactionType)} className="!w-24">
             <option value="expense">支出</option>
             <option value="income">収入</option>
           </Select>

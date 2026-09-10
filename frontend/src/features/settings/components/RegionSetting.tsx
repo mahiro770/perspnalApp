@@ -25,14 +25,24 @@ export function RegionSetting() {
         <CardTitle>天気の地域設定</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center gap-2 pt-0">
-        <Select value={selectedRegionCode} onChange={(e) => setSelectedRegionCode(e.target.value)}>
+        <Select
+          value={selectedRegionCode}
+          onChange={(e) => setSelectedRegionCode(e.target.value)}
+          className="min-w-0 flex-1"
+        >
           {regions.map((r) => (
             <option key={r.code} value={r.code}>
               {r.name}
             </option>
           ))}
         </Select>
-        <Button size="sm" variant="secondary" onClick={handleSave} disabled={mutation.isPending}>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={handleSave}
+          disabled={mutation.isPending}
+          className="flex-shrink-0 whitespace-nowrap"
+        >
           {saved ? <Check className="h-4 w-4 text-success" /> : 'デフォルトに設定'}
         </Button>
       </CardContent>
