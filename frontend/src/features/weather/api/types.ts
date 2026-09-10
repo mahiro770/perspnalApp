@@ -5,6 +5,13 @@ export interface WeatherRegion {
   name: string;
 }
 
+export interface WeatherFavorite {
+  id: string;
+  regionCode: string;
+  regionName: string;
+  isPrimary: boolean;
+}
+
 export interface HourlyForecast {
   /** ISO日時文字列 */
   time: string;

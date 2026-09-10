@@ -1,4 +1,4 @@
-import { DailyForecast, HourlyForecast, WeatherCondition, WeatherForecast, WeatherRegion } from './types';
+import { DailyForecast, HourlyForecast, WeatherCondition, WeatherFavorite, WeatherForecast, WeatherRegion } from './types';
 
 // 気象庁の地域マスタと突き合わせた47都道府県ぶんのコード。バックエンドの
 // regionCodes.ts と同じ内容(未接続時のモックフォールバック用に同梱)。
@@ -129,4 +129,31 @@ export function buildMockForecast(regionCode: string): WeatherForecast {
     hourly: buildHourly(base.high - 2),
     weekly: buildWeekly(base.high, base.low),
   };
+}
+
+const MOCK_FAVORITES: WeatherFavorite[] = [
+  { id: 'fav-tokyo', regionCode: '130000', regionName: '東京都', isPrimary: true },
+];
+
+export function mockListFavorites(): WeatherFavorite[] {
+  return MOCK_FAVORITES;
+}
+
+export function mockAddFavorite(regionCode: string): WeatherFavorite {
+  const existing = MOCK_FAVORITES.find((f) => f.regionCode === regionCode);
+  if (existing) return existing;
+  const region = MOCK_REGIONS.find((r) => r.code === regionCode);
+  const favorite: WeatherFavorite = {
+    id: `fav-${Date.now()}`,
+    regionCode,
+    regionName: region?.name ?? regionCode,
+    isPrimary: MOCK_FAVORITES.length === 0,
+  };
+  MOCK_FAVORITES.push(favorite);
+  return favorite;
+}
+
+export function mockRemoveFavorite(id: string): void {
+  const index = MOCK_FAVORITES.findIndex((f) => f.id === id);
+  if (index >= 0) MOCK_FAVORITES.splice(index, 1);
 }

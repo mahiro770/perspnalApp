@@ -50,6 +50,40 @@ export async function listAllLocations(db: Db) {
   return db.select().from(weatherLocations);
 }
 
+export async function listLocationsForUser(db: Db, userId: string) {
+  return db
+    .select()
+    .from(weatherLocations)
+    .where(eq(weatherLocations.userId, userId))
+    .orderBy(weatherLocations.sortOrder, weatherLocations.createdAt);
+}
+
+export async function addLocation(db: Db, userId: string, areaCode: string, areaName: string) {
+  const existing = await db
+    .select()
+    .from(weatherLocations)
+    .where(and(eq(weatherLocations.userId, userId), eq(weatherLocations.areaCode, areaCode)))
+    .limit(1);
+  if (existing[0]) return existing[0];
+
+  const userLocations = await db.select().from(weatherLocations).where(eq(weatherLocations.userId, userId));
+
+  // 最初の1件は自動的にデフォルト地域にする(未設定のまま予報が見られない状態を避ける)
+  const [row] = await db
+    .insert(weatherLocations)
+    .values({ userId, areaCode, areaName, isPrimary: userLocations.length === 0 })
+    .returning();
+  return row;
+}
+
+export async function removeLocation(db: Db, userId: string, id: string) {
+  const [row] = await db
+    .delete(weatherLocations)
+    .where(and(eq(weatherLocations.id, id), eq(weatherLocations.userId, userId)))
+    .returning();
+  return row ?? null;
+}
+
 export async function setPrimaryLocation(db: Db, userId: string, areaCode: string, areaName: string) {
   const existing = await db
     .select()

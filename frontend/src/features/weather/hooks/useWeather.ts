@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchForecast, fetchRegions, setDefaultRegion } from '../api/weatherApi';
+import { addFavorite, fetchFavorites, fetchForecast, fetchRegions, removeFavorite, setDefaultRegion } from '../api/weatherApi';
 
 export function useWeatherRegions() {
   return useQuery({
@@ -23,5 +23,28 @@ export function useSetDefaultRegion() {
   return useMutation({
     mutationFn: setDefaultRegion,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['weather'] }),
+  });
+}
+
+export function useFavoriteRegions() {
+  return useQuery({
+    queryKey: ['weather', 'favorites'],
+    queryFn: fetchFavorites,
+  });
+}
+
+export function useAddFavorite() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addFavorite,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['weather', 'favorites'] }),
+  });
+}
+
+export function useRemoveFavorite() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: removeFavorite,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['weather', 'favorites'] }),
   });
 }
