@@ -4,6 +4,7 @@ import { DashboardPage } from '@/features/dashboard/components/DashboardPage';
 import { WeatherPage } from '@/features/weather/components/WeatherPage';
 import { CalendarPage } from '@/features/calendar/components/CalendarPage';
 import { BudgetPage } from '@/features/budget/components/BudgetPage';
+import { StepsPage } from '@/features/steps/components/StepsPage';
 import { SettingsPage } from '@/features/settings/components/SettingsPage';
 import { MorePage } from '@/features/more/components/MorePage';
 
@@ -15,6 +16,7 @@ export function AppRoutes() {
         <Route path="/weather" element={<WeatherPage />} />
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/budget" element={<BudgetPage />} />
+        <Route path="/steps" element={<StepsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/more" element={<MorePage />} />
       </Route>
