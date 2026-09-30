@@ -32,6 +32,7 @@ export default {
         calendar: 'hsl(var(--color-calendar) / <alpha-value>)',
         income: 'hsl(var(--color-income) / <alpha-value>)',
         expense: 'hsl(var(--color-expense) / <alpha-value>)',
+        steps: 'hsl(var(--color-steps) / <alpha-value>)',
       },
       borderRadius: {
         lg: '0.75rem',

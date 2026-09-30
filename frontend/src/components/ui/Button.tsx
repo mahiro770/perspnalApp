@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'calendar' | 'income' | 'expense';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'calendar' | 'income' | 'expense' | 'steps';
 type Size = 'sm' | 'md' | 'icon';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -16,6 +16,7 @@ const variantClasses: Record<Variant, string> = {
   calendar: 'bg-calendar text-white hover:opacity-90',
   income: 'bg-income text-white hover:opacity-90',
   expense: 'bg-expense text-white hover:opacity-90',
+  steps: 'bg-steps text-white hover:opacity-90',
 };
 
 const sizeClasses: Record<Size, string> = {

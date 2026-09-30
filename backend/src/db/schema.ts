@@ -111,6 +111,25 @@ export const budgetGoals = sqliteTable(
   }),
 );
 
+export const healthSteps = sqliteTable(
+  'health_steps',
+  {
+    id: id(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    date: text('date').notNull(),
+    steps: integer('steps').notNull(),
+    // 送信元(例: 'shortcuts')。将来複数の連携元を扱う可能性への備え
+    source: text('source').notNull().default('shortcuts'),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (table) => ({
+    userDateKey: uniqueIndex('health_steps_user_date_key').on(table.userId, table.date),
+  }),
+);
+
 export const weatherLocations = sqliteTable(
   'weather_locations',
   {
@@ -165,12 +184,17 @@ export const usersRelations = relations(users, ({ many }) => ({
   budgetCategories: many(budgetCategories),
   budgetTransactions: many(budgetTransactions),
   budgetGoals: many(budgetGoals),
+  healthSteps: many(healthSteps),
   weatherLocations: many(weatherLocations),
   pushSubscriptions: many(pushSubscriptions),
 }));
 
 export const budgetGoalsRelations = relations(budgetGoals, ({ one }) => ({
   user: one(users, { fields: [budgetGoals.userId], references: [users.id] }),
+}));
+
+export const healthStepsRelations = relations(healthSteps, ({ one }) => ({
+  user: one(users, { fields: [healthSteps.userId], references: [users.id] }),
 }));
 
 export const calendarEventsRelations = relations(calendarEvents, ({ one, many }) => ({

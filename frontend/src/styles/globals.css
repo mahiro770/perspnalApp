@@ -27,6 +27,7 @@
   --color-calendar: 262 70% 55%;
   --color-income: 142 71% 35%;
   --color-expense: 0 72% 51%;
+  --color-steps: 25 90% 48%;
 }
 
 .dark {
@@ -49,6 +50,7 @@
   --color-calendar: 262 83% 72%;
   --color-income: 142 60% 50%;
   --color-expense: 0 84% 65%;
+  --color-steps: 28 92% 60%;
 }
 
 html,

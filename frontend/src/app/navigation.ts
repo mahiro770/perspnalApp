@@ -1,4 +1,4 @@
-import { CalendarDays, Cloud, Home, type LucideIcon, MoreHorizontal, Settings, Wallet } from 'lucide-react';
+import { CalendarDays, Cloud, Footprints, Home, type LucideIcon, MoreHorizontal, Settings, Wallet } from 'lucide-react';
 
 export interface NavItem {
   key: string;
@@ -17,6 +17,7 @@ export const navItems: NavItem[] = [
   { key: 'weather', label: '天気', icon: Cloud, path: '/weather' },
   { key: 'calendar', label: 'カレンダー', icon: CalendarDays, path: '/calendar' },
   { key: 'budget', label: '家計簿', icon: Wallet, path: '/budget' },
+  { key: 'steps', label: '歩数', icon: Footprints, path: '/steps' },
   { key: 'settings', label: '設定', icon: Settings, path: '/settings' },
 ];
 
